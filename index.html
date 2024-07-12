@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flexbox UI Project</title>
+<style>
+    /* General body styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* Navbar styles */
+    .navbar {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between; /* Aligns items at start and end of the navbar */
+        align-items: center; /* Centers items vertically */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-right: auto; /* Pushes the brand to the left */
+    }
+    
+    .nav-links {
+        display: flex;
+        gap: 30px; /* Increased gap between items */
+        align-items: center; /* Aligns items vertically */
+    }
+    
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+        position: relative; /* Needed for dropdown positioning */
+    }
+    
+    .nav-links a:hover {
+        background-color: #555;
+        border-radius: 4px; /* Rounded corners on hover */
+    }
+    
+    /* Dropdown styles */
+    .dropdown {
+        position: relative; /* Enables dropdown positioning */
+    }
+    
+    .dropdown-content {
+        display: none; /* Initially hides dropdown content */
+        position: absolute; /* Absolute positioning relative to parent */
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a shadow */
+        border-radius: 4px;
+        z-index: 1; /* Ensures dropdown is above other content */
+        top: 100%; /* Positions dropdown below its parent */
+        left: 0; /* Aligns dropdown with parent's left edge */
+        width: 200px; /* Adjusts width of dropdown */
+    }
+    
+    .dropdown:hover .dropdown-content {
+        display: block; /* Shows dropdown content on hover */
+    }
+    
+    .dropdown-content a {
+        color: black;
+        padding: 10px;
+        display: block;
+        text-decoration: none;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+    }
+    
+    .dropdown-content a:hover {
+        background-color: #ddd;
+        border-radius: 4px; /* Rounded corners on hover */
+    }
+    
+    /* Gallery styles */
+    .gallery {
+        display: flex;
+        flex-wrap: wrap; /* Allows cards to wrap to the next line */
+        gap: 20px; /* Spacing between cards */
+        padding: 20px;
+    }
+    
+    .card {
+        background-color: #f0f0f0;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a shadow */
+        flex: 1 1 300px; /* Initial flex properties to set a minimum width */
+        margin-bottom: 20px; /* Spacing between cards */
+        transition: transform 0.3s ease; /* Smooth transition on hover */
+    }
+    
+    .card:hover {
+        transform: translateY(-5px); /* Moves card up slightly on hover */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Increases shadow on hover */
+    }
+    
+    /* Form container styles */
+    .form-container {
+        width: 300px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a shadow */
+        margin: 20px auto; /* Centers the form container horizontally */
+    }
+    
+    .form-container h2 {
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Spacing between form elements */
+    }
+    
+    .form-container label {
+        font-weight: bold;
+    }
+    
+    .form-container input,
+    .form-container textarea {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        width: 100%;
+        box-sizing: border-box; /* Ensures padding and border are included in width */
+    }
+    
+    .form-container button {
+        padding: 12px 24px;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+        margin-top: 15px;
+        align-self: center; /* Centers button within form container */
+    }
+    
+    .form-container button:hover {
+        background-color: #555;
+    }
+    
+    /* Media Queries for Responsive Design */
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column; /* Stack items vertically on small screens */
+            align-items: stretch; /* Stretch items to fill width */
+        }
+        
+        .nav-links {
+            display: none;
+        }
+        
+        .navbar-brand {
+            margin-right: 0; /* Center brand on small screens */
+            text-align: center; /* Center text */
+            margin-bottom: 10px; /* Add space below brand */
+        }
+        
+        .dropdown {
+            margin-top: 10px; /* Add space between dropdowns */
+        }
+        
+        .card {
+            flex: 1 0 90%; /* Single card per row */
+            max-width: 90%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .navbar {
+            padding: 5px; /* Reduce padding on smaller screens */
+        }
+        
+        .nav-links {
+            flex-direction: column; /* Stack links vertically */
+            gap: 10px; /* Reduce gap between links */
+        }
+        
+        .nav-links a {
+            padding: 8px; /* Adjust padding on links */
+        }
+        
+        .dropdown-content {
+            width: 100%; /* Full width dropdown */
+            left: auto; /* Center dropdown */
+            right: 0; /* Align dropdown to the right */
+        }
+        
+        .card {
+            flex: 1 0 90%; /* Single card per row */
+            max-width: 90%;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navbar Section -->
+<div class="navbar">
+    <div class="navbar-brand">Flex</div>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <div class="dropdown">
+            <a href="#">About &#9662;</a>
+            <div class="dropdown-content">
+                <a href="#">About Us</a>
+                <a href="#">Our Team</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Services &#9662;</a>
+            <div class="dropdown-content">
+                <a href="#">Web Design</a>
+                <a href="#">Development</a>
+            </div>
+        </div>
+        <a href="#">Contact</a>
+    </div>
+</div>
+
+<!-- Form Container Section -->
+<div class="form-container">
+    <h2>Add New Card</h2>
+    <form id="newCardForm">
+        <div>
+            <label for="cardTitle">Card Title:</label>
+            <input type="text" id="cardTitle" name="cardTitle" required>
+        </div>
+        <div>
+            <label for="cardContent">Card Content:</label>
+            <textarea id="cardContent" name="cardContent" rows="4" required></textarea>
+        </div>
+        <button type="submit">Create Card</button>
+    </form>
+</div>
+
+<!-- Gallery Section for Cards -->
+<div class="gallery" id="gallery">
+    <!-- Existing cards will be added here dynamically -->
+</div>
+
+<script>
+    // Function to generate a random light color
+    function getRandomColor() {
+        // Generate random RGB values in the range of 200-255 for lighter colors
+        var r = Math.floor(Math.random() * 56) + 200; // Red component
+        var g = Math.floor(Math.random() * 56) + 200; // Green component
+        var b = Math.floor(Math.random() * 56) + 200; // Blue component
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // Function to create a new card element
+    function createCardElement(cardTitle, cardContent, cardColor) {
+        return `
+            <div class="card" style="background-color: ${cardColor};">
+                <h3>${cardTitle}</h3>
+                <p>${cardContent}</p>
+            </div>
+        `;
+    }
+
+    // Function to load cards from localStorage
+    function loadCards() {
+        var savedCards = JSON.parse(localStorage.getItem('cards')) || [];
+        var gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
+        savedCards.forEach(function(card) {
+            var cardHTML = createCardElement(card.title, card.content, card.color);
+            gallery.innerHTML += cardHTML;
+        });
+    }
+
+    // Function to save cards to localStorage
+    function saveCards(cards) {
+        localStorage.setItem('cards', JSON.stringify(cards));
+    }
+
+    // Function to handle form submission
+    document.getElementById('newCardForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get form values
+        var cardTitle = document.getElementById('cardTitle').value;
+        var cardContent = document.getElementById('cardContent').value;
+
+        // Generate a random light color
+        var cardColor = getRandomColor();
+
+        // Create new card HTML with the generated color
+        var newCardHTML = createCardElement(cardTitle, cardContent, cardColor);
+
+        // Append new card to gallery
+        var gallery = document.getElementById('gallery');
+        gallery.innerHTML += newCardHTML;
+
+        // Save card details to localStorage
+        var savedCards = JSON.parse(localStorage.getItem('cards')) || [];
+        savedCards.push({ title: cardTitle, content: cardContent, color: cardColor });
+        saveCards(savedCards);
+
+        // Reset form
+        document.getElementById('newCardForm').reset();
+    });
+
+    // Load cards when the page loads
+    window.onload = loadCards;
+</script>
+
+</body>
+</html>
